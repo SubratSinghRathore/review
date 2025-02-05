@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const { reviewModel } = require("./db");
-
+const cors = require("cors");
 
 app.use(cors({
     origin: '*',
