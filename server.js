@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.post("/review/admin/new-review", async (req, res) => {
-    const title = req.body.title;
+    const title = req.query.title;
     const reviewId = Math.floor(Math.random() * (99999999 - 10000000 + 1)) + 10000000;
     try {
         const makeReview = await reviewModel({
