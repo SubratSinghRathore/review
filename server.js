@@ -37,8 +37,8 @@ app.post("/review/admin/new-review", async (req, res) => {
 });
 
 app.patch("/review/user", async (req, res) => {
-    const reviewId = req.body.reviewId;
-    const reviewContent = req.body.reviewContent;
+    const reviewId = req.query.reviewId;
+    const reviewContent = req.query.reviewContent;
     try {
         const reviewObject = await reviewModel.findOne({ reviewId });
         const reviewArray = reviewObject.review;
