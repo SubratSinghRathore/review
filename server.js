@@ -38,13 +38,16 @@ app.post("/review/admin/new-review", async (req, res) => {
 
 app.patch("/review/user", async (req, res) => {
     const reviewId = req.query.reviewId;
-    const reviewContent = req.query.reviewContent;
+    //const reviewContent = req.query.reviewContent;
     try {
         const reviewObject = await reviewModel.findOne({ reviewId });
-        const reviewArray = reviewObject.review;
-        reviewArray.push(reviewContent);
-        const reviewUpdate = await reviewModel.updateMany({ reviewId }, { review: reviewArray });
-        res.status(200).send("done")
+        const title = reviewObject.reviewTitle;
+        //const reviewArray = reviewObject.review;
+        //reviewArray.push(reviewContent);
+        //const reviewUpdate = await reviewModel.updateMany({ reviewId }, { review: reviewArray });
+        res.status(200).json({
+            title: title
+        })
     }
     catch (error) {
         res.status(400).json({
