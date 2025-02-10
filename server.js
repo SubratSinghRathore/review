@@ -36,15 +36,11 @@ app.post("/review/admin/new-review", async (req, res) => {
     }
 });
 
-app.patch("/review/user", async (req, res) => {
+app.get("/review/user", async (req, res) => {
     const reviewId = req.query.reviewId;
-    //const reviewContent = req.query.reviewContent;
     try {
         const reviewObject = await reviewModel.findOne({ reviewId });
         const title = reviewObject.reviewTitle;
-        //const reviewArray = reviewObject.review;
-        //reviewArray.push(reviewContent);
-        //const reviewUpdate = await reviewModel.updateMany({ reviewId }, { review: reviewArray });
         res.status(200).json({
             title: title
         })
@@ -55,6 +51,32 @@ app.patch("/review/user", async (req, res) => {
         });
     }
 });
+
+app.patch("/review/user/update", async (req, res) => {
+    const reviewId = req.query.reviewId;
+    const reviewContent = req.query.reviewContent;
+
+    try {
+        const reviewObject = await reviewModel.updateOne(
+            { reviewId },  
+            { $push: { review: reviewContent } } 
+        );
+
+        if (reviewObject.modifiedCount === 0) {
+            return res.status(404).json({ errorMsg: "Review not found or not updated." });
+        }
+
+        res.status(200).json({
+            message: "Review updated successfully"
+        });
+    } catch (error) {
+        console.error(error); 
+        res.status(400).json({
+            errorMsg: "Failed to add review. Please try again later.",
+        });
+    }
+});
+
 
 app.get("/review/view", async (req, res) => {
     const reviewId = req.body.reviewId;
