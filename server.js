@@ -77,9 +77,8 @@ app.patch("/review/user/update", async (req, res) => {
     }
 });
 
-
-app.get("/review/view", async (req, res) => {
-    const reviewId = req.body.reviewId;
+app.get("/review/admin/view", async (req, res) => {
+    const reviewId = req.query.reviewId;
     try {
         const reviewObject = await reviewModel.findOne({ reviewId });
         const reviewArray = reviewObject.review;
