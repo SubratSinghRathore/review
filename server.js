@@ -132,8 +132,8 @@ app.get("/review/user/giveReview", async (req, res) => {
     </div>
     <script>
         function submitReview() {
-        const reviewContent = document.getElementById("reviewContent").value;
-            fetch("https://review-dyeb.onrender.com/review/user/update?reviewId=${id}&reviewContent=document.getElementById("reviewContent").value", {
+        const content = document.getElementById("reviewContent").value;
+            fetch("https://review-dyeb.onrender.com/review/user/update?reviewId=${id}&reviewContent=${content}", {
         method: "PATCH",
         headers: { 'Content-Type': 'application/json' },
     })
@@ -144,7 +144,6 @@ app.get("/review/user/giveReview", async (req, res) => {
             reloadPage();
         })
 }
-        }
     </script>
 </body>
 </html>
