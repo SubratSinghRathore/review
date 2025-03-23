@@ -62,6 +62,7 @@ app.get("/review/user/giveReview", async (req, res) => {
     }
     res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,6 +74,7 @@ app.get("/review/user/giveReview", async (req, res) => {
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
+
         body {
             display: flex;
             justify-content: center;
@@ -80,6 +82,7 @@ app.get("/review/user/giveReview", async (req, res) => {
             height: 100vh;
             background: url('https://source.unsplash.com/random/1600x900') no-repeat center center/cover;
         }
+
         .container {
             background: rgba(16, 66, 101, 0.2);
             backdrop-filter: blur(10px);
@@ -89,12 +92,14 @@ app.get("/review/user/giveReview", async (req, res) => {
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .title {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 10px;
             color: black;
         }
+
         textarea {
             width: 100%;
             height: 100px;
@@ -108,6 +113,7 @@ app.get("/review/user/giveReview", async (req, res) => {
             color: black;
             font-size: 16px;
         }
+
         button {
             margin-top: 10px;
             padding: 10px 20px;
@@ -118,41 +124,33 @@ app.get("/review/user/giveReview", async (req, res) => {
             cursor: pointer;
             transition: 0.3s;
         }
+
         button:hover {
             background: rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="heading">Leave a Review</div>
         <div class="title">${title}</div>
-        <textarea id="reviewContent" placeholder="Write your review here..."></textarea>
-        <button onclick="submitReview()">Submit</button>
+        <form action="https://review-dyeb.onrender.com/review/user/update?reviewId=${id}" method="post">
+            <textarea id="reviewContent" placeholder="Write your review here..." name="reviewContent"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+
     </div>
-    <script>
-        function submitReview() {
-        const content = document.getElementById("reviewContent").value;
-            fetch("https://review-dyeb.onrender.com/review/user/update?reviewId=${id}&reviewContent=${content}", {
-        method: "PATCH",
-        headers: { 'Content-Type': 'application/json' },
-    })
-        .then(res => {
-            if (res.ok) {
-                alert("review submitted successfully");
-            };
-            reloadPage();
-        })
-}
-    </script>
 </body>
+
 </html>
 `)
 })
 
-app.patch("/review/user/update", async (req, res) => {
+app.post("/review/user/update", async (req, res) => {
     const reviewId = req.query.reviewId;
-    const reviewContent = req.query.reviewContent;
+    const reviewContent = req.query.reviewContent || req.body.reviewContent;
+    
 
     try {
         const reviewObject = await reviewModel.updateOne(
