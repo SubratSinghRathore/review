@@ -157,13 +157,15 @@ app.post("/review/user/update", async (req, res) => {
             { reviewId },
             { $push: { review: reviewContent } }
         );
-
+        console.log(reviewObject)
         if (reviewObject.modifiedCount === 0) {
             return res.status(404).json({ errorMsg: "Review not found or not updated." });
         }
 
         res.status(200).json({
-            message: "Review updated successfully"
+            message: "Review updated successfully",
+            msg: reviewObject,
+            cont: reviewContent
         });
     } catch (error) {
         console.error(error);
