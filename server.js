@@ -149,7 +149,7 @@ app.get("/review/user/giveReview", async (req, res) => {
 
 app.post("/review/user/update", async (req, res) => {
     const reviewId = req.query.reviewId;
-    const reviewContent = req.body.reviewContent;
+    const reviewContent = req.query.reviewContent || req.body.reviewContent;
 
     if (!reviewContent) {
         return res.status(400).send("<h1>Review content is missing</h1>");
