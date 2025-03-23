@@ -148,21 +148,27 @@ app.get("/review/user/giveReview", async (req, res) => {
 })
 
 app.post("/review/user/update", async (req, res) => {
-    const reviewId = req.query.reviewId;
-    const reviewContent =  req.body.reviewContent;
-    
+    console.log("Request Body:", req.body); // Debugging log
+
+    const reviewId = req.query.reviewId;  // Extract review ID from query params
+    const reviewContent = req.body.reviewContent; // Extract textarea content
+
+    if (!reviewContent) {
+        return res.status(400).json({ errorMsg: "Review content is missing" });
+    }
 
     try {
         const reviewObject = await reviewModel.updateOne(
             { reviewId },
             { $push: { review: reviewContent } }
         );
-        console.log(reviewObject)
+
+        console.log("Update Result:", reviewObject);
+
         if (reviewObject.modifiedCount === 0) {
             return res.status(404).json({ errorMsg: "Review not found or not updated." });
         }
-        console.log(reviewContent);
-        
+
         res.status(200).json({
             cont: reviewContent,
             message: "Review updated successfully",
@@ -170,11 +176,10 @@ app.post("/review/user/update", async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        res.status(400).json({
-            errorMsg: "Failed to add review. Please try again later.",
-        });
+        res.status(500).json({ errorMsg: "Failed to update review." });
     }
 });
+
 
 app.get("/review/admin/view", async (req, res) => {
     const reviewId = req.query.reviewId;
