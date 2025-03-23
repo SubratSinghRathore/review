@@ -149,7 +149,7 @@ app.get("/review/user/giveReview", async (req, res) => {
 
 app.post("/review/user/update", async (req, res) => {
     const reviewId = req.query.reviewId;
-    const reviewContent = req.query.reviewContent || req.body.reviewContent;
+    const reviewContent =  req.body.reviewContent;
     
 
     try {
